@@ -1,0 +1,43 @@
+<?php
+return [
+    'app_debug' => true,
+    'app_status' => '',
+    'cache' => [
+        'type' => 'File',
+        'path' => CACHE_PATH,
+        'prefix' => '',
+        'expire' => 0,
+    ],
+    'session' => [
+        'id' => '',
+        'type' => '',
+        'prefix' => 'think',
+        'auto_start' => true,
+    ],
+    'trace' => [
+        'type' => 'Html',
+    ],
+    'database' => [
+        'type' => 'mysql',
+        'hostname' => getenv('DB_HOST') ?: 'db',
+        'database' => getenv('DB_DATABASE') ?: 'labelease',
+        'username' => getenv('DB_USERNAME') ?: 'root',
+        'password' => getenv('DB_PASSWORD') ?: 'rootpassword',
+        'hostport' => getenv('DB_PORT') ?: '3306',
+        'params' => [],
+        'charset' => 'utf8mb4',
+        'prefix' => 'fa_',
+        'debug' => true,
+    ],
+    'url_html_suffix' => 'html',
+    'url_route_on' => true,
+    'url_route_must' => false,
+    'url_convert' => true,
+    'lang_switch_on' => false,
+    'default_lang' => 'zh-cn',
+    'admin_login_background' => '',
+    'system_name' => 'FastAdmin财务系统',
+    'system_copy_right' => '© 2024 FastAdmin',
+    'product_name' => 'FastAdmin',
+    'company_name' => 'FastAdmin Inc.',
+];

@@ -1,0 +1,4 @@
+.git
+.runtime
+application/.DS_Store
+application/index/controller/Index.php
