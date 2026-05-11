@@ -1,52 +1,12 @@
 <?php
 namespace app\admin\controller;
 
-use think\Controller;
-
-class AccommodationIncomeExpense extends Controller {
-    public function index() {
-        $list = \think\Db::instance()->table('accommodation_income_expense')->order('id', 'desc')->select();
-        $this->assign('list', $list);
-        return $this->fetch();
-    }
-    
-    public function add() {
-        if ($this->request->isPost()) {
-            $data = [
-                'type' => $this->request->param('type'),
-                'amount' => $this->request->param('amount'),
-                'category' => $this->request->param('category'),
-                'description' => $this->request->param('description'),
-                'property_name' => $this->request->param('property_name'),
-                'date' => $this->request->param('date'),
-                'createtime' => time()
-            ];
-            \think\Db::instance()->table('accommodation_income_expense')->insert($data);
-            $this->success('添加成功', url('index'));
-        }
-        return $this->fetch();
-    }
-    
-    public function edit($id = 0) {
-        if ($this->request->isPost()) {
-            $data = [
-                'type' => $this->request->param('type'),
-                'amount' => $this->request->param('amount'),
-                'category' => $this->request->param('category'),
-                'description' => $this->request->param('description'),
-                'property_name' => $this->request->param('property_name'),
-                'date' => $this->request->param('date')
-            ];
-            \think\Db::instance()->table('accommodation_income_expense')->where('id', $id)->update($data);
-            $this->success('更新成功', url('index'));
-        }
-        $row = \think\Db::instance()->table('accommodation_income_expense')->find($id);
-        $this->assign('row', $row);
-        return $this->fetch();
-    }
-    
-    public function delete($id = 0) {
-        \think\Db::instance()->table('accommodation_income_expense')->where('id', $id)->delete();
-        $this->success('删除成功', url('index'));
-    }
+class AccommodationIncomeExpense extends BaseIncomeExpense {
+    protected $tableName = 'accommodation_income_expense';
+    protected $moduleTitle = '住宿收支';
+    protected $moduleName = '住宿收支';
+    protected $extraFields = [
+        'property_name' => ['label' => '物业名称', 'placeholder' => '请输入物业名称']
+    ];
+    protected $categoryPlaceholder = '如：水电、维修、租金等';
 }
