@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo isset($row) ? '编辑' : '新增'; ?>餐厅收支 - FastAdmin财务系统</title>
+    <title><?php echo isset($row) ? '编辑' : '新增'; ?><?php echo $config['module_label']; ?> - FastAdmin财务系统</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Microsoft YaHei', Arial, sans-serif; display: flex; min-height: 100vh; background: #f5f6fa; }
@@ -37,13 +37,13 @@
         <div class="menu-item">
             <a href="/admin/console/index">控制台</a>
         </div>
-        <div class="menu-item active">
+        <div class="menu-item <?php echo $config['module_name'] == 'restaurant_income_expense' ? 'active' : ''; ?>">
             <a href="/admin/restaurant_income_expense/index">餐厅收支管理</a>
         </div>
-        <div class="menu-item">
+        <div class="menu-item <?php echo $config['module_name'] == 'accommodation_income_expense' ? 'active' : ''; ?>">
             <a href="/admin/accommodation_income_expense/index">住宿收支管理</a>
         </div>
-        <div class="menu-item">
+        <div class="menu-item <?php echo $config['module_name'] == 'daily_financial' ? 'active' : ''; ?>">
             <a href="/admin/daily_financial/index">财务日常管理</a>
         </div>
         <div class="menu-item">
@@ -52,7 +52,7 @@
     </div>
     <div class="main-content">
         <div class="header">
-            <h1><?php echo isset($row) ? '编辑' : '新增'; ?>餐厅收支</h1>
+            <h1><?php echo isset($row) ? '编辑' : '新增'; ?><?php echo $config['module_label']; ?></h1>
         </div>
         <div class="form-container">
             <form method="POST">
@@ -71,10 +71,12 @@
                     <label>分类</label>
                     <input type="text" name="category" value="<?php echo isset($row) ? htmlspecialchars($row['category']) : ''; ?>" placeholder="如：食材、人工、租金等">
                 </div>
-                <div class="form-group">
-                    <label>餐厅名称 *</label>
-                    <input type="text" name="restaurant_name" value="<?php echo isset($row) ? htmlspecialchars($row['restaurant_name']) : ''; ?>" required placeholder="请输入餐厅名称">
-                </div>
+                <?php if ($config['extra_field']): ?>
+                    <div class="form-group">
+                        <label><?php echo $config['extra_field_label']; ?> *</label>
+                        <input type="text" name="<?php echo $config['extra_field']; ?>" value="<?php echo isset($row) ? htmlspecialchars($row[$config['extra_field']]) : ''; ?>" required placeholder="请输入<?php echo $config['extra_field_label']; ?>">
+                    </div>
+                <?php endif; ?>
                 <div class="form-group">
                     <label>日期 *</label>
                     <input type="date" name="date" value="<?php echo isset($row) ? htmlspecialchars($row['date']) : date('Y-m-d'); ?>" required>
@@ -84,7 +86,7 @@
                     <textarea name="description" placeholder="请输入详细描述"><?php echo isset($row) ? htmlspecialchars($row['description']) : ''; ?></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">保存</button>
-                <a href="/admin/restaurant_income_expense/index" class="btn btn-default">返回</a>
+                <a href="/admin/<?php echo $config['module_name']; ?>/index" class="btn btn-default">返回</a>
             </form>
         </div>
     </div>

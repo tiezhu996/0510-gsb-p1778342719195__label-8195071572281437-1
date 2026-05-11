@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>住宿收支管理 - FastAdmin财务系统</title>
+    <title><?php echo $config['module_label']; ?>管理 - FastAdmin财务系统</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Microsoft YaHei', Arial, sans-serif; display: flex; min-height: 100vh; background: #f5f6fa; }
@@ -20,6 +20,7 @@
         .btn { padding: 10px 20px; border-radius: 5px; text-decoration: none; font-size: 14px; cursor: pointer; border: none; display: inline-block; }
         .btn-primary { background: #3498db; color: white; }
         .btn-danger { background: #e74c3c; color: white; }
+        .btn-success { background: #27ae60; color: white; }
         .table-container { background: white; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 15px; text-align: left; border-bottom: 1px solid #eee; }
@@ -42,13 +43,13 @@
         <div class="menu-item">
             <a href="/admin/console/index">控制台</a>
         </div>
-        <div class="menu-item">
+        <div class="menu-item <?php echo $config['module_name'] == 'restaurant_income_expense' ? 'active' : ''; ?>">
             <a href="/admin/restaurant_income_expense/index">餐厅收支管理</a>
         </div>
-        <div class="menu-item active">
+        <div class="menu-item <?php echo $config['module_name'] == 'accommodation_income_expense' ? 'active' : ''; ?>">
             <a href="/admin/accommodation_income_expense/index">住宿收支管理</a>
         </div>
-        <div class="menu-item">
+        <div class="menu-item <?php echo $config['module_name'] == 'daily_financial' ? 'active' : ''; ?>">
             <a href="/admin/daily_financial/index">财务日常管理</a>
         </div>
         <div class="menu-item">
@@ -57,12 +58,12 @@
     </div>
     <div class="main-content">
         <div class="header">
-            <h1>住宿收支管理</h1>
-            <a href="/admin/accommodation_income_expense/add" class="btn btn-primary">新增住宿收支</a>
+            <h1><?php echo $config['module_label']; ?>管理</h1>
+            <a href="/admin/<?php echo $config['module_name']; ?>/add" class="btn btn-primary">新增<?php echo $config['module_label']; ?></a>
         </div>
         <div class="table-container">
             <?php if (empty($list)): ?>
-                <div class="empty-state">暂无数据，请添加住宿收支记录</div>
+                <div class="empty-state">暂无数据，请添加<?php echo $config['module_label']; ?>记录</div>
             <?php else: ?>
                 <table>
                     <thead>
@@ -71,8 +72,13 @@
                             <th>类型</th>
                             <th>金额</th>
                             <th>分类</th>
-                            <th>物业名称</th>
+                            <?php if ($config['extra_field']): ?>
+                                <th><?php echo $config['extra_field_label']; ?></th>
+                            <?php endif; ?>
                             <th>日期</th>
+                            <?php if (!$config['extra_field']): ?>
+                                <th>描述</th>
+                            <?php endif; ?>
                             <th>操作</th>
                         </tr>
                     </thead>
@@ -83,11 +89,16 @@
                             <td class="type-<?php echo $item['type']; ?>"><?php echo $item['type'] == 'income' ? '收入' : '支出'; ?></td>
                             <td>¥<?php echo number_format($item['amount'], 2); ?></td>
                             <td><?php echo htmlspecialchars($item['category']); ?></td>
-                            <td><?php echo htmlspecialchars($item['property_name']); ?></td>
+                            <?php if ($config['extra_field']): ?>
+                                <td><?php echo htmlspecialchars($item[$config['extra_field']]); ?></td>
+                            <?php endif; ?>
                             <td><?php echo $item['date']; ?></td>
+                            <?php if (!$config['extra_field']): ?>
+                                <td><?php echo mb_substr(htmlspecialchars($item['description']), 0, 30); ?></td>
+                            <?php endif; ?>
                             <td class="actions">
-                                <a href="/admin/accommodation_income_expense/edit/<?php echo $item['id']; ?>">编辑</a>
-                                <a href="/admin/accommodation_income_expense/delete/<?php echo $item['id']; ?>" class="delete" onclick="return confirm('确定要删除吗？')">删除</a>
+                                <a href="/admin/<?php echo $config['module_name']; ?>/edit/<?php echo $item['id']; ?>">编辑</a>
+                                <a href="/admin/<?php echo $config['module_name']; ?>/delete/<?php echo $item['id']; ?>" class="delete" onclick="return confirm('确定要删除吗？')">删除</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
